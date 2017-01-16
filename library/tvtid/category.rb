@@ -4,6 +4,7 @@ module TVTid
   # A category for an EPG entry.
   class Category
     attr_accessor :color, :shade
+    attr_reader :name
 
     # Constructs a new category with a name.
     def initialize name
