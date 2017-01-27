@@ -45,6 +45,7 @@ module TVTid
         json_data.map do |schedule|
           channel = channels.find{|channel| channel.id == schedule['id']}
           programs = schedule['programs'].map{|program| Program.from_json program }
+          programs.sort!{|a, b| a.start_time <=> b.start_time }
 
           Schedule.new channel, programs
         end
