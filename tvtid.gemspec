@@ -18,7 +18,7 @@ Gem::Specification.new do |spec|
   spec.add_runtime_dependency 'oj', '~> 2.18'
 
   spec.require_path = "library"
-  spec.required_ruby_version = ">= 1.9.1"
+  spec.required_ruby_version = ">= 2.2"
 end
 
 # vim: set syntax=ruby:
