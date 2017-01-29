@@ -45,7 +45,11 @@ module TVTid
 
         json_data.map do |schedule|
           channel = channels.find{|channel| channel.id == schedule['id']}
-          programs = schedule['programs'].map{|program| Program.from_json program }
+          programs = schedule['programs'].map do |program|
+            program = Program.from_json program
+            program.channel_id = schedule['id']
+            program
+          end
           programs.sort!{|a, b| a.start_time <=> b.start_time }
 
           Schedule.new channel, programs
@@ -76,6 +80,19 @@ module TVTid
         json_data = MultiJson.load response.body
         json_data.map{|json_channel_data| Channel.from_json json_channel_data }
       end
+    end
+
+    # Retrieves program details and updates the given program object.
+    #
+    # @return [Program] the program
+    def get_program_details! program
+      response = @http.get "/api/tvtid/v1/channels/#{program.channel_id}/programs/#{program.id}", HTTP_REQUEST_HEADERS
+
+      if response.code == '200'
+        program.parse_json! MultiJson.load(response.body)
+      end
+
+      program
     end
   end
 end
