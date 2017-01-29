@@ -1,6 +1,6 @@
 require_relative '../spec_helper'
 
-describe TVTid::Schedule do
+describe TVTid::Schedule, :vcr do
   describe '#at' do
     it 'should return an array, a program and another array' do
       client = TVTid::Client.new

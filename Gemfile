@@ -5,6 +5,8 @@ gem 'lrucache'
 gem 'multi_json'
 
 group :development do
+  gem 'vcr'
+  gem 'webmock'
   gem 'rspec'
   gem 'guard'
   gem 'guard-rspec'

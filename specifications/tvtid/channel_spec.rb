@@ -1,6 +1,6 @@
 require_relative '../spec_helper'
 
-describe TVTid::Channel do
+describe TVTid::Channel, :vcr do
   subject { described_class.new 1, 'Channel name' }
 
   it 'should have an id and a title' do

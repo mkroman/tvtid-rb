@@ -1,6 +1,6 @@
 require_relative '../spec_helper'
 
-describe TVTid::Client do
+describe TVTid::Client, :vcr do
   describe '#channels' do
     it 'should return a list of channels' do
       expect(subject.channels.first).to be_kind_of TVTid::Channel
