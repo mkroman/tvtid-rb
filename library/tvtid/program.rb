@@ -1,32 +1,34 @@
 module TVTid
   class Program
-    # The id of the program.
+    # @return [Numeric] the id of the program.
     attr_reader :id
-    # The title of the program.
+    # @return [String] the title of the program.
     attr_reader :title
-    # The time the program starts at.
+    # @return [DateTime] the time the program starts at.
     attr_accessor :start_time
-    # The time the program stops at.
+    # @return [DateTime] the time the program ends at.
     attr_accessor :stop_time
-    # A url where the user can see more information about the program.
+    # @return [String] a URL to where the user can see more information about
+    #   the program.
     attr_accessor :url
-    # The ID of the channel.
+    # @return [Numeric] the ID of the channel.
     attr_accessor :channel_id
-    # The category of the program.
+    # @return [String] the category of the program.
     attr_accessor :category
-    # The description of the program.
+    # @return [String] the description of the program.
     attr_accessor :description
-    # The original non-localized title of the program.
+    # @return [String] the original non-localized title of the program.
     attr_accessor :original_title
-    # The year of production of the program.
+    # @return [Numeric] the year of production of the program.
     attr_accessor :production_year
-    # The production country of the program.
+    # @return [String] the production country of the program.
     attr_accessor :production_country
-    # Teaser text for the program.
+    # @return [String] the teaser text of the program.
     attr_accessor :teaser
-    # Unique series id if the program is a series.
+    # @return [Numeric] a unique series id if the program is a series.
     attr_accessor :series_id
-    # Episode and season information if the program is a series.
+    # @return [Hash, nil] episode and season information if the program is a
+    #   series.
     attr_accessor :series_info
 
     # Constructs a new `Program` with an `id` and a `title`.
@@ -36,6 +38,8 @@ module TVTid
     end
 
     # Updates the program information from a json object.
+    #
+    # @param json [Hash] Parsed JSON object
     def parse_json! json
       @start_time = Time.at(json['start']).to_datetime
       @stop_time = Time.at(json['stop']).to_datetime
@@ -52,7 +56,9 @@ module TVTid
 
     # Constructs a `Program` from a json object.
     #
-    # @returns Program if json object has an `id` and a `title` - nil otherwise.
+    # @param json [Hash] Parsed JSON object
+    # @return [Program, nil] program if the given `json` object has an `id` 
+    #   and a `title` attribute, nil otherwise.
     def self.from_json json
       return nil unless json['id'] and json['title']
 

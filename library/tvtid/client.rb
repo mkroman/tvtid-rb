@@ -20,16 +20,17 @@ module TVTid
                         118, 153, 94, 12948, 145, 185, 157, 15, 71, 93, 15049,
                         219, 37, 248, 186]
 
-    # Constructs a new client
+    # Constructs a new client.
     def initialize
       @cache = LRUCache.new ttl: CACHE_TTL, soft_ttl: CACHE_SOFT_TTL
       @http = Net::HTTP.new API_BASE_URI.host, API_BASE_URI.port
     end
 
-    # Returns a schedule for the given date
+    # Returns a schedule for the provided channels the given date
     #
     # @param date A date
     # @param channels A list of channel ids to request schedules for
+    # @return [Array<Schedule>] the list of schedules
     def schedules_for date, channels = []
       return nil unless date.is_a? Date
 
@@ -54,7 +55,7 @@ module TVTid
 
     # Returns a list of schedules for today
     #
-    # This is the same as using `schedules_for Date.today`
+    # This is equivalent to using `chedules_for Date.today`
     def schedules_for_today channels = []
       schedules_for Date.today, channels
     end

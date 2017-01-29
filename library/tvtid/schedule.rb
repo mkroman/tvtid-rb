@@ -1,19 +1,23 @@
 module TVTid
   class Schedule
-    # The channel the schedule belongs to.
+    # @return [Channel] the channel the schedule belongs to.
     attr_reader :channel
-    # The list of programs in the schedule.
+    # @return [Array<Program>] the list of programs in the schedule.
     attr_reader :programs
 
-    # Constructs a new schedule for a `channel`.
+    # Constructs a new schedule for a channel.
+    #
+    # @param channel [Channel] the parent channel
+    # @param programs [Array<Program>] a list of programs
     def initialize channel, programs = []
       @channel = channel
       @programs = programs
     end
 
-    # Get the previous, current and upcoming programs at a given `time`.
+    # Returns the previous, current and upcoming programs at a given `time`.
     #
-    # @returns [previous<Array>, current<Program>, upcoming<Array>]
+    # @return [(Array<Program>, Program, Array<Program>)] the previous, the
+    #   current and the upcoming programs relative to the given `time`.
     def at time
       cur_idx = 0
 
@@ -29,9 +33,8 @@ module TVTid
       end
     end
 
-    # Returns the previous, current and upcoming programs.
-    #
-    # @see at
+    # @return [(Array<Program>, Program, Array<Program>)] the previous, the
+    #   current and the upcoming programs relative to the current time.
     def current
       self.at DateTime.now
     end
