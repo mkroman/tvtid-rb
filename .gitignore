@@ -1,3 +1,4 @@
 .yardoc
 documentation/
 .bundle/
+Gemfile.lock
