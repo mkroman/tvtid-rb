@@ -1,7 +1,7 @@
 # TVTid
 This is a Ruby library for interfacing with the unofficial API on `tvtid.tv2.dk`.
 
-[![Build Status](https://travis-ci.org/mkroman/tvtid.svg)](https://travis-ci.org/mkroman/tvtid)
+[![Build Status](https://travis-ci.org/mkroman/tvtid.svg?branch=master)](https://travis-ci.org/mkroman/tvtid)
 [![Dependency Status](https://gemnasium.com/mkroman/tvtid.svg)](https://gemnasium.com/mkroman/tvtid)
 
 ## Example
