@@ -7,11 +7,12 @@ module TVTid
     # The soft cache time to live.
     CACHE_SOFT_TTL = 7 * 60 * 60 * 24 # 7 days
     # The API backend host.
-    API_BASE_URI = URI 'http://tvtid-app-backend.tv2.dk'
+    API_BASE_URI = URI 'http://tvtid-backend.tv2.dk/tvtid-app-backend'
 
     # The default HTTP request headers
     HTTP_REQUEST_HEADERS = {
-      'User-Agent' => 'Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/56.0.2924.76 Safari/537.36'
+      'User-Agent' => 'Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/56.0.2924.76 Safari/537.36',
+      'Accept' => 'application/json'
     }
 
     # The default channels to return in a days schedule
@@ -40,7 +41,7 @@ module TVTid
 
       @cache.fetch cache_key do
         channel_queries = channels.map{|c| "ch=#{c.id}" }.join '&'
-        response = @http.get "/api/tvtid/v1/dayviews/#{formatted_date}?#{channel_queries}", HTTP_REQUEST_HEADERS
+        response = @http.get "/tvtid-app-backend/dayviews/#{formatted_date}?#{channel_queries}", HTTP_REQUEST_HEADERS
         json_data = MultiJson.load response.body
 
         json_data.map do |schedule|
@@ -61,7 +62,13 @@ module TVTid
     #
     # This is equivalent to using `chedules_for Date.today`
     def schedules_for_today channels = []
-      schedules_for Date.today, channels
+      date_time = DateTime.now
+
+      if date_time.hour <= 5 and date_time.hour >= 0
+        date_time = date_time.now - 1
+      end
+
+      schedules_for date_time.to_date, channels
     end
 
     # Returns a days schedule for a given channel and date
@@ -75,7 +82,7 @@ module TVTid
     # Returns a list of channels
     def channels
       @cache.fetch 'channels' do
-        response = @http.get '/api/tvtid/v1/channels', HTTP_REQUEST_HEADERS
+        response = @http.get '/tvtid-app-backend/channels', HTTP_REQUEST_HEADERS
 
         json_data = MultiJson.load response.body
         json_data.map{|json_channel_data| Channel.from_json json_channel_data }
@@ -86,7 +93,7 @@ module TVTid
     #
     # @return [Program] the program
     def get_program_details! program
-      response = @http.get "/api/tvtid/v1/channels/#{program.channel_id}/programs/#{program.id}", HTTP_REQUEST_HEADERS
+      response = @http.get "/tvtid-app-backend/channels/#{program.channel_id}/programs/#{program.id}", HTTP_REQUEST_HEADERS
 
       if response.code == '200'
         program.parse_json! MultiJson.load(response.body)
